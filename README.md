@@ -99,7 +99,7 @@ Additionally, Holdout models show following accuracy.
 | Base     | Stepwise | -                                    | **96.3** |     47.3 |      0.0 |      0.0 |      2.7 |      5.8 |     10.3h |
 |          | Cyclic   | -                                    |     94.5 |     11.8 |      0.0 |      0.0 |      7.2 |      9.7 |      1.4h |
 | Adv_FGSM | Stepwise | _eps=8/255_                          |     84.1 | **99.2** |      0.1 |      0.0 |     84.2 |     84.7 |     19.4h |
-|          |          | Ealry Stopping(_epoch=112/200_)      |     83.3 |     51.8 |     41.7 |     41.3 |     82.2 |     82.2 |         - |
+|          |          | Ealry Stopping (_epoch=112/200_)     |     83.3 |     51.8 |     41.7 |     41.3 |     82.2 |     82.2 |         - |
 |          | Cyclic   | _eps=8/255_                          |     61.6 |     98.5 |      0.0 |      0.0 |     68.0 |     68.3 |      2.4h |
 |          |          | Ealry Stopping (_epoch=20/30_)       |     72.1 |     45.0 |     39.5 |     39.1 |     70.2 |     70.3 |         - |
 | Adv_PGD  | Stepwise | _eps=8/255, stepsize=2/255, steps=7_ |     87.0 |     55.5 |     42.2 |     41.1 |     86.0 |     86.2 |     67.5h |
