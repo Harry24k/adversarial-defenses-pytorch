@@ -15,16 +15,16 @@ class Trainer(BaseTrainer):
     Arguments:
         model (nn.Module): model to train.
         eps (float): strength of the attack or maximum perturbation.
-        alpha (float): alpha in the paper.
-        iters (int): step size.
+        alpha (float): step size.
+        steps (int): nu,ber of steps.
         random_start (bool): using random initialization of delta.
         
     """
     def __init__(self, model, train_sets, test_sets,
-                 eps, alpha, iters, random_start):
+                 eps, alpha, steps, random_start):
         super(Trainer, self).__init__(model, train_sets, test_sets)
         self.record_keys = ["Loss", "Acc"]
-        self.pgd = PGD(model, eps, alpha, iters, random_start)
+        self.pgd = PGD(model, eps, alpha, steps, random_start)
     
     def _do_iter(self, images, labels):
         r"""
