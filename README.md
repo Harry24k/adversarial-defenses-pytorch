@@ -105,7 +105,7 @@ Additionally, Holdout models show following accuracy.
 | Adv_PGD  | Stepwise | _eps=8/255, stepsize=2/255, steps=7_           |     87.0 |     55.5 |     42.2 |     41.1 | 86.0 | 86.2 |     67.5h |
 |          | Cyclic   | _eps=8/255, stepsize=2/255, steps=7_           |     85.4 |     59.1 | **51.7** | **51.3** | 84.4 | 84.4 |     11.1h |
 |          | Stepwise | _eps=8/255, stepsize=2/255, steps=4_           |     89.0 |     58.3 |     43.6 |     43.0 | 88.2 | 88.3 |     47.3h |
-|          | Cyclic   | _eps=8/255, stepsize=2/255, steps=4_           |          |          |          |          |      |      |           |
+|          | Cyclic   | _eps=8/255, stepsize=2/255, steps=4_           |     88.2 |     57.3 |     46.9 |     46.6 | 87.2 | 87.1 |      7.1h |
 |          | Stepwise | _eps=8/255, stepsize=4/255, steps=2_           |     89.3 |     58.3 |     42.9 |     42.5 | 88.3 | 88.3 |     28.6h |
 |          | Cyclic   | _eps=8/255, stepsize=4/255, steps=2_           |     88.2 |     57.2 |     46.6 |     46.3 | 87.2 | 87.2 |      3.6h |
 | Free     | Stepwise | _eps=8/255, m=8_                               |     85.2 |     54.6 |     45.0 |     44.7 | 84.3 | 84.2 |      9.3h |
