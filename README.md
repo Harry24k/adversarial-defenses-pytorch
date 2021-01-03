@@ -21,18 +21,36 @@ _Adversarial-Defenses-PyTorch_ is a set of implementations of adversarial defens
 
 ### Train
 
-#### 
+**1. Modify `settings.py` to set arguments for training.**
+
+   ```python
+args.gpu = 0
+args.name = "FGSMAdv_CIFAR10_PRN18_Cyclic"
+args.save_path = "./_checkpoint/"
+args.loader = "Base"
+args.model = "PRN18"
+args.trainer = "FGSMAdv"
+...
+   ```
+
+Options for loader, model, and trainer are in [loader.py](/defenses/loader.py), [model.py](/defenses/model.py), and [trainer.py](/defenses/trainer.py).
+
+
+
+**2. Run train.py**
 
 ```bash
 python train.py
 ```
 
+
+
 Then, training records will be printed every epoch.
 
-* Clean : An average standard accuracy over the epoch.
-* FGSM : An average robust accuracy against FGSM over the epoch.
-* PGD : An average robust accuracy against PGD7 over the epoch.
-* GN : An average robust accuracy against Guassian Noise with a standard deviation 0.1 over the epoch.
+* Clean : Average standard accuracy over the epoch.
+* FGSM : Average robust accuracy against FGSM over the epoch.
+* PGD : Average robust accuracy against PGD7 over the epoch.
+* GN : Average robust accuracy against Guassian Noise with a standard deviation 0.1 over the epoch.
 
 Each record will be evaluated on the first training batch (Tr) and the first test batch (Te).
 
