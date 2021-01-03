@@ -69,14 +69,20 @@ If you use this package, please cite the following BibTex:
 
 * **Environment**:
 	* Single NVIDIA Corporation GV100 [TITAN V]
+
+
 * **Model Architecture**:
     * **Pre-Act-ResNet-18** [[Paper](https://arxiv.org/abs/1603.05027)] [[Code](https://github.com/kuangliu/pytorch-cifar)]
         * #Params: 11,171,146
     * **Wide-ResNet-28-10** [[Paper](https://arxiv.org/abs/1605.07146)] [[Code](https://github.com/bearpaw/pytorch-classification/blob/master/models/cifar/wrn.py)]
       * #Params: 36,479,194
+
+
 * **Data Preprocessing**
   * **Normalize**: _mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]_. Please refer to [here](/defenses/model.py).
   * **Augmentation**: _Random Crop, Random Horizontal Flip_ for only _training set_.
+
+
 * **Training Recipes**:
     * **Stepwise**:
         * **Epoch**: 100.
