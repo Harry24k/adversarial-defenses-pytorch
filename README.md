@@ -1,65 +1,58 @@
-# Adversairal-Defenses-Pytorch
-Benchmarks list of Adversarial defenses on PyTorch.
+# Adversarial-Defenses-PyTorch
+_Adversarial-Defenses-PyTorch_ is a set of implementations of adversarial defense methods. The goal of this package is to make a _fair comparison_ of adversarial defenses. Although there's a lot of adversarial defense methods, a fair comparison between methods is still difficult. There are two reasons: (1) _different coding style_, and (2) _different training setting_. To resolve this issue, in this repo, we provide several defense methods and their robustness with the same setting.
 
-[TOC]
+
 
 ## Usage
 
-### Dependencies
+### :clipboard: Dependencies
 
-- torchattacks 2.0 [[Repo](https://github.com/Harry24k/adversairal-attacks-pytorch)]
-- torch 1.5.0
-- torchvision 0.5.0
-- python 3.6
-
-
-
-## Experiment
-
-### Settings
-* **Environment**:
-	
-	* Single NVIDIA Corporation GV100 [TITAN V]
-* **Model Architecture**:
-
-  * WRN-28-10 (Dropout=0.3) [[Paper](https://arxiv.org/abs/1605.07146)] [[Code](https://github.com/bearpaw/pytorch-classification/blob/master/models/cifar/wrn.py)] is used as a base network.
-  * PreActRensNet18 [[Paper](https://arxiv.org/abs/1603.05027)] [[Code](https://github.com/kuangliu/pytorch-cifar)] is used as an additional network.
-* **Data Preprocessing**
-
-	* **Batch_size**: 128.
-	* **Normalize**: mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]. It is included inside WRN due to _torchattacks_.
-	* **Augmentation**: _Random Crop, Random Horizontal Flip_ for only _training set_.
-* **Training Recipes**: The base setting is same as in [https://github.com/bearpaw/pytorch-classification/](https://github.com/bearpaw/pytorch-classification/)
-    * **Stepwise** :
-        * **Epoch**: 200.
-        * **Optimizer**: SGD with _learning rate=0.1, momentum=0.9, weight_decay=5e-4_.
-        * **Learning Rate Decay**: x0.2 when the epoch reaches 60, 120 and 160.
-    * **Cyclic**:
-        * **Epoch**: 30.
-        * **Optimizer**: SGD with _learning rate=0.1, momentum=0.9, weight_decay=5e-4_.
-        * **Learning Rate Decay**: _max learning rate=0.2_
-* **Google Drive**: For easy reproduction, the state dicts of _pretrained models_ and _adversarial image datasets_ are provided through [Google Drive](https://drive.google.com/drive/folders/1aGcq-mTz0jm6MLS2m3RS6aMwpjRdOrBp?usp=sharing).
+- python==3.6
+- torch==1.4.0
+- torchvision==0.5.0
+- [torchattacks](https://github.com/Harry24k/adversarial-attacks-pytorch)==2.11
+  - `pip install torchattacks`
+  - `git clone https://github.com/Harry24k/adversairal-attacks-pytorch`
+- [torchhk](https://github.com/Harry24k/pytorch-custom-utils)==0.85
+  - `pip install torchhk`
+  - `git clone https://github.com/Harry24k/pytorch-custom-utils`
 
 
 
-## Defenses
-### Implementation
+## Citation
 
-Because each defense is totally different, the code is divided into three parts as shown in the below table. For each part, if the defense uses a **different method compared to the base's**, it is checked with :heavy_check_mark:, otherwise it is marked with :x:.
+If you use this package, please cite the following BibTex:
 
-| No.  | Defense  | Description                                                  | Loader | Model |       Train        |
-| :--: | -------- | ------------------------------------------------------------ | :----: | :---: | :----------------: |
-| #00  | Base     | Clean Training                                               |   -    |   -   |         -          |
-| #01  | Adv_FGSM | Adverarial Training with FGSM ([Goodfellow et al., 2014](https://arxiv.org/abs/1412.6572)) |  :x:   |  :x:  | :heavy_check_mark: |
-| #02  | Adv_PGD  | Adverarial Training with PGD ([Madry et al., 2017](https://arxiv.org/abs/1706.06083)) |  :x:   |  :x:  | :heavy_check_mark: |
-| #03  | Free     | Adversarial Training for Free! ([Shafahi et al., 2019](https://arxiv.org/abs/1904.12843)) |  :x:   |  :x:  | :heavy_check_mark: |
-| #04  | Fast     | Fast is better than Free ([Wong et al., 2020](https://arxiv.org/abs/2001.03994)) |  :x:   |  :x:  | :heavy_check_mark: |
+```
+@article{kim2020torchattacks,
+  title={Torchattacks: A Pytorch Repository for Adversarial Attacks},
+  author={Kim, Hoki},
+  journal={arXiv preprint arXiv:2010.01950},
+  year={2020}
+}
+```
 
 
 
-### Reported Accuracy
+## List of defenses
+**The code** is divided into three parts, that are data **loader**, **model** structure, and **trainer**. For each part, if the defense uses a different method compared to the base's, it is checked with :heavy_check_mark:, otherwise it is marked with :x:.
 
-Reported accuracy of each defense under _epsilon=8/255_ :
+| Defense       | Description                                                  | Loader | Model |      Trainer       |
+| ------------- | ------------------------------------------------------------ | :----: | :---: | :----------------: |
+| **Base**      | **Standard Training**                                        |   -    |   -   |         -          |
+|               | **Single-step Adversarial Training**                         |        |       |                    |
+| **FGSMAdv**   | Adversarial Training with FGSM ([Goodfellow et al., 2014](https://arxiv.org/abs/1412.6572)) |  :x:   |  :x:  | :heavy_check_mark: |
+| **Free**      | Adversarial Training for Free! ([Shafahi et al., 2019](https://arxiv.org/abs/1904.12843)) |  :x:   |  :x:  | :heavy_check_mark: |
+| **Fast**      | Fast is better than Free ([Wong et al., 2020](https://arxiv.org/abs/2001.03994)) |  :x:   |  :x:  | :heavy_check_mark: |
+| **GradAlign** | Understanding and Improving Fast Adversarial Training ([Andriushchenko et al., 2020]()) |  :x:   |  :x:  | :heavy_check_mark: |
+|               | **Multi-step Adversarial Training**                          |        |       |                    |
+| **PGDAdv**    | Adversarial Training with PGD ([Madry et al., 2017](https://arxiv.org/abs/1706.06083)) |  :x:   |  :x:  | :heavy_check_mark: |
+| **TRADES**    | Theoretically Principled Trade-off between Robustness and Accuracy ([Zhang et al., 2019](https://arxiv.org/abs/1901.08573)) |  :x:   |  :x:  | :heavy_check_mark: |
+| **MART**      | Improving Adversarial Robustness Requires Revisiting Misclassified Examples ([Wang et al., 2020](https://openreview.net/forum?id=rklOg6EFwS)) |  :x:   |  :x:  | :heavy_check_mark: |
+
+
+
+## Validation with Reported Accuracy
 
 | Defense  | Architecture   | Natural | FGSM | PGD7 | PGD20 | PGD50 | Remarks            |
 | -------- | -------------- | ------: | ---: | ---: | ----: | ----: | ------------------ |
@@ -72,51 +65,36 @@ Reported accuracy of each defense under _epsilon=8/255_ :
 
 
 
-## Results
+## Settings
+
+* **Environment**:
+	* Single NVIDIA Corporation GV100 [TITAN V]
+* **Model Architecture**:
+    * **Pre-Act-ResNet-18** [[Paper](https://arxiv.org/abs/1603.05027)] [[Code](https://github.com/kuangliu/pytorch-cifar)]
+        * #Params: 11,171,146
+    * **Wide-ResNet-28-10** [[Paper](https://arxiv.org/abs/1605.07146)] [[Code](https://github.com/bearpaw/pytorch-classification/blob/master/models/cifar/wrn.py)]
+      * #Params: 36,479,194
+* **Data Preprocessing**
+  * **Normalize**: _mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]_. Please refer to [here](/defenses/model.py).
+  * **Augmentation**: _Random Crop, Random Horizontal Flip_ for only _training set_.
+* **Training Recipes**:
+    * **Stepwise**:
+        * **Epoch**: 100.
+        * **Optimizer**: _SGD_ with _momentum=0.9, weight_decay=5e-4_.
+        * **Learning Rate**: _Initial learning rate=0.1_ and _decay x0.1 at 50 and 75 epoch_.
+    * **Cyclic**:
+        * **Epoch**: 30.
+        * **Optimizer**: _SGD_ with _momentum=0.9, weight_decay=5e-4_.
+        * **Learning Rate Decay**: _Initial learning rate=0.0_ and _maximum learning rate=0.3_
+
+
+
+## Benchmarks
 
 ### CIFAR10
 
-Top-1 accuracy on CIFAR-10.
-
-Each column means as follows :
-
-* **FGSM**: **White Box** Attack with FSGM(_epslion_=_8/255)_.
-* **PGD**: **White Box** Attack with PGD_(stepsize, epsilon, steps=2/255, 8/255, 50)_.
-* **RPGD**: **White Box** Attack with RPGD_(stepsize, epsilon, steps=2/255, 8/255, 50) with 10 Random Restarts_.
-* **BB1**: **Black Box** Attack with PGD_(stepsize, epsilon, steps=2/255, 8/255, 50)_ using **WRN-28-20** as a Holdout model.
-* **BB2**: **Black Box** Attack with PGD_(stepsize, epsilon, steps=2/255, 8/255, 50)_ using **WRN-40-10** as a Holdout model.
-
-Additionally, Holdout models show following accuracy.
-* **WRN-28-20** : Clean(96.33%) / FGSM(47.08%) / PGD(0.01%) / RPGD(0.00%)
-* **WRN-40-10** : Clean(96.17%) / FGSM(56.18%) / PGD(0.00%) / RPGD(0.00%)
 
 
 
-#### WRN-28-10
 
-| Defense  | Decay    | Params                                         |    Clean |     FGSM |      PGD |     RPGD |  BB1 |  BB2 | Time(_h_) |
-| -------- | -------- | ---------------------------------------------- | -------: | -------: | -------: | -------: | ---: | ---: | --------: |
-| Base     | Stepwise | -                                              | **96.3** |     47.3 |      0.0 |      0.0 |  2.7 |  5.8 |     10.3h |
-|          | Cyclic   | -                                              |     94.5 |     11.8 |      0.0 |      0.0 |  7.2 |  9.7 |      1.4h |
-| Adv_FGSM | Stepwise | _eps=8/255_                                    |     84.1 | **99.2** |      0.1 |      0.0 | 84.2 | 84.7 |     19.4h |
-|          |          | Ealry Stopping (_epoch=112/200_)               |     83.3 |     51.8 |     41.7 |     41.3 | 82.2 | 82.2 |         - |
-|          | Cyclic   | _eps=8/255_                                    |     61.6 |     98.5 |      0.0 |      0.0 | 68.0 | 68.3 |      2.4h |
-|          |          | Ealry Stopping (_epoch=20/30_)                 |     72.1 |     45.0 |     39.5 |     39.1 | 70.2 | 70.3 |         - |
-| Adv_PGD  | Stepwise | _eps=8/255, stepsize=2/255, steps=7_           |     87.0 |     55.5 |     42.2 |     41.1 | 86.0 | 86.2 |     67.5h |
-|          | Cyclic   | _eps=8/255, stepsize=2/255, steps=7_           |     85.4 |     59.1 | **51.7** | **51.3** | 84.4 | 84.4 |     11.1h |
-|          | Stepwise | _eps=8/255, stepsize=2/255, steps=4_           |     89.0 |     58.3 |     43.6 |     43.0 | 88.2 | 88.3 |     47.3h |
-|          | Cyclic   | _eps=8/255, stepsize=2/255, steps=4_           |     88.2 |     57.3 |     46.9 |     46.6 | 87.2 | 87.1 |      7.1h |
-|          | Stepwise | _eps=8/255, stepsize=4/255, steps=2_           |     89.3 |     58.3 |     42.9 |     42.5 | 88.3 | 88.3 |     28.6h |
-|          | Cyclic   | _eps=8/255, stepsize=4/255, steps=2_           |     88.2 |     57.2 |     46.6 |     46.3 | 87.2 | 87.2 |      3.6h |
-| Free     | Stepwise | _eps=8/255, m=8_                               |     85.2 |     54.6 |     45.0 |     44.7 | 84.3 | 84.2 |      9.3h |
-| Fast     | Stepwise | _eps=8/255, stepsize=10/255_                   |     88.8 |     99.0 |      0.0 |      0.0 | 81.5 | 81.8 |     19.4h |
-|          |          | Ealry Stopping (_epoch=64/200_)                |     84.7 |     53.8 |     43.8 |     43.4 | 83.5 | 83.4 |         - |
-|          | Cyclic   | _eps=8/255, stepsize=10/255_                   |     85.2 |     97.4 |      0.1 |      0.0 | 85.2 | 85.9 |      2.6h |
-|          |          | Ealry Stopping (_epoch=26/30_)                 |     81.5 |     51.9 |     41.6 |     41.3 | 79.9 | 80.0 |         - |
-| TRADES   | Stepwise | _eps=8/255, stepsize=2/255, steps=7, beta=1.0_ |     88.3 |     57.6 |     43.6 |     43.1 | 87.3 | 87.1 |    104.3h |
-| TRADES   | Cyclic   | _eps=8/255, stepsize=2/255, steps=7, beta=1.0_ |     88.6 |     54.5 |     45.1 |     44.7 | 87.0 | 87.1 |     15.5h |
-
-
-
-#### PreActResNet18
-
+#### Pre-Act-ResNet-18
