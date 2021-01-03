@@ -7,9 +7,6 @@ from defenses.model import get_model
 from defenses.trainer import get_trainer
 
 
-if __name__ == "__main__":
-    run(args)
-
 def run(args):
 
     torch.cuda.set_device(args.gpu)
@@ -41,7 +38,11 @@ def run(args):
     trainer.train(train_loader=train_loader, max_epoch=args.max_epoch,
                   optimizer=args.optimizer, scheduler=args.scheduler,
                   scheduler_type=args.scheduler_type,
-                  save_type="Epoch", save_path=args.save_path+args.name,
+                  save_type=None, save_path=args.save_path+args.name,
                   save_overwrite=False, record_type="Epoch")
 
     trainer.save_all(args.save_path+args.name)
+
+
+if __name__ == "__main__":
+    run(args)

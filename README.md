@@ -19,6 +19,50 @@ _Adversarial-Defenses-PyTorch_ is a set of implementations of adversarial defens
 
 
 
+### Train
+
+#### 
+
+```bash
+python train.py
+```
+
+Then, training records will be printed every epoch.
+
+* Clean : An average standard accuracy over the epoch.
+* FGSM : An average robust accuracy against FGSM over the epoch.
+* PGD : An average robust accuracy against PGD7 over the epoch.
+* GN : An average robust accuracy against Guassian Noise with a standard deviation 0.1 over the epoch.
+
+Each record will be evaluated on the first training batch (Tr) and the first test batch (Te).
+
+At the end of training, it shows a summary of the training records. In addition, the weights of model will be saved to [path + name + ".pth"] (e.g., ./sample.pth) and the records will also be saved to [path + name + ".csv"] (e.g., ./sample.csv).
+
+
+
+### Evaluation
+
+#### Standard Accuracy
+```bash
+python eval.py --model-path "./_checkpoint/model.pth" --model "PRN18" --data "CIFAR10" --gpu 0 --method "Standard"
+```
+
+#### FGSM
+
+```bash
+python eval.py --model-path "./_checkpoint/model.pth" --model "PRN18" --data "CIFAR10" --data-path "FGSM.pt" --gpu 0 --method "FGSM" --eps 8
+```
+
+#### PGD50
+
+```bash
+python eval.py --model-path "./_checkpoint/model.pth" --model "PRN18" --data "CIFAR10" --data-path "PGD.pt" --gpu 0 --method "PGD" --eps 8 --alpha 2 --steps 50 --restart 1
+```
+
+These commands will show you the robust accuracy against FGSM or PGD for the test dataset and save the adversarial images to the data-path.
+
+
+
 ## Citation
 
 If you use this package, please cite the following BibTex:

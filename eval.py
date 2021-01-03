@@ -2,10 +2,42 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 import torch
 
-from torchattacks import FGSM, PGD, MultiAttack
+from torchattacks import VANILA, FGSM, PGD, MultiAttack
 
 from defenses.loader import base_loader
 from defenses.model import get_model
+
+def run(gpu, model_path, model, data, num_classes, data_path,
+        method, eps, alpha, steps, restart):
+
+    torch.cuda.set_device(gpu)
+
+    # Set Model
+    model = get_model(name=model, num_classes=num_classes).cuda()
+
+    model.load_state_dict(torch.load(model_path))
+    model = model.cuda().eval()
+
+    # Get Test Loader
+    _, test_loader = base_loader(data_name=data,
+                                 shuffle_train=False)
+
+    if method == "Standard":
+        atk = VANILA(model)
+    elif method == "FGSM":
+        atk = FGSM(model, eps=eps)
+    elif method == "PGD":
+        pgd = PGD(model, eps=eps, alpha=alpha, steps=steps, random_start=True)
+        atk = MultiAttack([pgd]*restart)
+    else:
+        raise ValueError("Not valid method.")
+
+    atk.set_return_type('int')
+    atk.save(data_loader=test_loader,
+             save_path=data_path, verbose=True)
+
+    print("Test Done!")
+
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Evaluation script", formatter_class=ArgumentDefaultsHelpFormatter)
@@ -27,40 +59,9 @@ if __name__ == "__main__":
         args.model,
         args.data,
         args.num_classes,
-        args.data_path,        
+        args.data_path,
         args.method,
         args.eps/255,
         args.alpha/255,
         args.steps,
         args.restart)
-
-def run(gpu, model_path, model, data, num_classes, data_path,
-        method, eps, alpha, steps, restart):
-
-    torch.cuda.set_device(gpu)
-
-    # Set Model
-    model = get_model(name=model, num_classes=10).cuda()
-
-    model.load_state_dict(torch.load(model_path))
-    model = model.cuda().eval()
-
-    # Get Test Loader
-    _, test_loader = base_loader(data_name=DATA_NAME,
-                                 shuffle_train=False)
-    
-    if method == "Standard":
-        atk = VANILA(model, eps=eps)
-    elif method == "FGSM":
-        atk = FGSM(model, eps=eps)
-    elif method == "PGD":
-        pgd = PGD(model, eps=eps, alpha=alpha, steps=steps, random_start=True)
-        atk = MultiAttack([pgd]*restart)
-    else:
-        raise ValueError("Not valid method.")
-        
-    atk.set_return_type('int')
-    atk.save(data_loader=test_loader,
-             save_path=data_path, verbose=True)
-
-    print("Test Done!")
