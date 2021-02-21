@@ -1,5 +1,5 @@
 # Adversarial-Defenses-PyTorch
-_Adversarial-Defenses-PyTorch_ is a set of implementations of adversarial defense methods. The goal of this package is to make a _fair comparison_ of adversarial defenses. Although there's a lot of adversarial defense methods, a fair comparison between methods is still difficult. There are two reasons: (1) _different coding style_, and (2) _different training setting_. To resolve this issue, in this repo, we provide several defense methods and their robustness with the same setting.
+_Adversarial-Defenses-PyTorch_ is a set of implementations of adversarial defense methods. The goal of this package is to make a _fair comparison_ of adversarial defenses. Although there's a lot of adversarial defense methods, a fair comparison between methods is still difficult. There are two reasons: (1) _different coding style_, and (2) _different training setting_. To resolve this issue, we provide several defense methods and their robustness with the same setting.
 
 
 
@@ -10,10 +10,10 @@ _Adversarial-Defenses-PyTorch_ is a set of implementations of adversarial defens
 - python==3.6
 - torch==1.4.0
 - torchvision==0.5.0
-- [torchattacks](https://github.com/Harry24k/adversarial-attacks-pytorch)==2.11
+- [torchattacks](https://github.com/Harry24k/adversarial-attacks-pytorch)==2.13.1
   - `pip install torchattacks`
   - `git clone https://github.com/Harry24k/adversairal-attacks-pytorch`
-- [torchhk](https://github.com/Harry24k/pytorch-custom-utils)==0.85
+- [torchhk](https://github.com/Harry24k/pytorch-custom-utils)==0.85.1
   - `pip install torchhk`
   - `git clone https://github.com/Harry24k/pytorch-custom-utils`
 
@@ -114,19 +114,6 @@ If you use this package, please cite the following BibTex:
 
 
 
-## Validation with Reported Accuracy
-
-| Defense  | Architecture   | Natural | FGSM | PGD7 | PGD20 | PGD50 | Remarks            |
-| -------- | -------------- | ------: | ---: | ---: | ----: | ----: | ------------------ |
-| Adv_FGSM | ResNet32       |    87.4 | 90.9 |  0.0 |   0.0 |     - |                    |
-| Adv_FGSM | WRN-32-10      |    90.3 | 95.1 |  0.0 |   0.0 |     - |                    |
-| Adv_PGD  | ResNet32       |    79.4 | 51.7 | 47.1 |  43.7 |     - | _7 steps training_ |
-| Adv_PGD  | WRN-32-10      |    87.3 | 56.1 | 50.0 |  45.8 |     - | _7 steps training_ |
-| Free     | WRN-32-10      |    86.0 |    - |    - |  46.3 |     - | _PGD restart=10_   |
-| Fast     | PreActResNet18 |    86.1 |    - |    - |     - |  46.1 | _PGD restart=10_   |
-
-
-
 ## Settings
 
 * **Environment**:
@@ -166,7 +153,7 @@ If you use this package, please cite the following BibTex:
 
 
 
-## Robustness
+## Performance
 
 Following "Overfitting in adversarially robust deep learning ([Rice et al., 2020](https://arxiv.org/abs/2002.11569))", we summarize robustness at the epoch of the best PGD accuracy on the first test batch for stepwise learning rate schedule.
 
