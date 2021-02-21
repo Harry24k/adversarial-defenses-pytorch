@@ -47,14 +47,14 @@ python train.py
 
 Then, training records will be printed every epoch.
 
-* Clean : Average standard accuracy over the epoch.
-* FGSM : Average robust accuracy against FGSM over the epoch.
-* PGD : Average robust accuracy against PGD7 over the epoch.
-* GN : Average robust accuracy against Guassian Noise with a standard deviation 0.1 over the epoch.
+* Clean: Average standard accuracy.
+* FGSM: Average robust accuracy against FGSM.
+* PGD: Average robust accuracy against PGD.
+* GN: Average robust accuracy against Guassian Noise with a standard deviation 0.1.
 
 Each record will be evaluated on the first training batch (Tr) and the first test batch (Te).
 
-At the end of training, it shows a summary of the training records. In addition, the weights of model will be saved to [path + name + ".pth"] (e.g., ./sample.pth) and the records will also be saved to [path + name + ".csv"] (e.g., ./sample.csv).
+At the end of training, it shows a summary of the training records. In addition, the weights of model will be saved to [save_path+ name + ".pth"] (e.g., ./checkpoint/sample.pth) and the records will also be saved to [save_path+ name + ".csv"] (e.g., ./checkpoint/sample.csv).
 
 
 
@@ -130,26 +130,35 @@ If you use this package, please cite the following BibTex:
 ## Settings
 
 * **Environment**:
+	
 	* Single NVIDIA Corporation GV100 [TITAN V]
+	
+	
 
 
 * **Model Architecture**:
-    * **Pre-Act-ResNet-18** [[Paper](https://arxiv.org/abs/1603.05027)] [[Code](https://github.com/kuangliu/pytorch-cifar)]
+    * **Pre-Act-ResNet-18 (PRN18)**  [[Paper](https://arxiv.org/abs/1603.05027)] [[Code](https://github.com/kuangliu/pytorch-cifar)]
+      
         * #Params: 11,171,146
-    * **Wide-ResNet-28-10** [[Paper](https://arxiv.org/abs/1605.07146)] [[Code](https://github.com/bearpaw/pytorch-classification/blob/master/models/cifar/wrn.py)]
+    * **Wide-ResNet-28-10 (WRN28)** [[Paper](https://arxiv.org/abs/1605.07146)] [[Code](https://github.com/bearpaw/pytorch-classification/blob/master/models/cifar/wrn.py)]
+      
       * #Params: 36,479,194
+      
+      
 
 
 * **Data Preprocessing**
   * **Normalize**: _mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]_. Please refer to [here](/defenses/model.py).
   * **Augmentation**: _Random Crop, Random Horizontal Flip_ for only _training set_.
+  
+  
 
 
 * **Training Recipes**:
     * **Stepwise**:
         * **Epoch**: 100.
         * **Optimizer**: _SGD_ with _momentum=0.9, weight_decay=5e-4_.
-        * **Learning Rate**: _Initial learning rate=0.1_ and _decay x0.1 at 50 and 75 epoch_.
+        * **Learning Rate**: _Initial learning rate=0.01_ and _decay x0.1 at 50 and 75 epoch_.
     * **Cyclic**:
         * **Epoch**: 30.
         * **Optimizer**: _SGD_ with _momentum=0.9, weight_decay=5e-4_.
@@ -157,12 +166,43 @@ If you use this package, please cite the following BibTex:
 
 
 
-## Benchmarks
+## Robustness
+
+Following "Overfitting in adversarially robust deep learning ([Rice et al., 2020](https://arxiv.org/abs/2002.11569))", we summarize robustness at the epoch of the best PGD accuracy on the first test batch for stepwise learning rate schedule.
+
+Checkpoints for each model are provided through the link of each model name.
 
 ### CIFAR10
 
+#### Cyclic
+
+| PRN18         | Standard |     FGSM |      PGD | Time (m) |
+| ------------- | -------: | -------: | -------: | -------: |
+| **Base**      |     93.3 |     14.7 |      0.0 |       13 |
+| _Single-step_ |          |          |          |          |
+| **FGSMAdv**   |     71.4 | **93.5** |      0.3 |       21 |
+| **Fast**      | **84.7** |     55.0 | **45.3** |       21 |
+| **Free**      |     68.1 |     42.7 |     39.6 |   **14** |
+| **GradAlign** |     84.5 |     53.4 |     44.0 |       95 |
+| _Mutli-step_  |          |          |          |          |
+| **PGDAdv**    | **81.0** | **56.2** |     50.7 |   **87** |
+| **TRADES**    |     79.5 |     54.5 |     50.7 |      101 |
+| **MART**      |     75.8 |     55.7 | **52.5** |       95 |
 
 
 
+#### Stepwise
 
-#### Pre-Act-ResNet-18
+| PRN18         | Standard | FGSM |  PGD | Time (m) |
+| ------------- | -------: | ---: | ---: | -------: |
+| **Base**      |     93.7 | 12.9 |  0.0 |       46 |
+|               |          |      |      |          |
+| **FGSMAdv**   |     72.1 | 45.2 | 38.9 |          |
+| **Fast**      |     77.2 | 45.6 | 37.9 |          |
+| **Free**      |     73.9 | 44.4 | 39.0 |          |
+| **GradAlign** |     78.2 | 44.3 | 35.5 |          |
+|               |          |      |      |          |
+| **PGDAdv**    |     71.9 | 45.4 | 40.9 |          |
+| **TRADES**    |     69.1 | 45.5 | 42.5 |          |
+| **MART**      |     75.5 | 52.5 | 46.8 |          |
+
