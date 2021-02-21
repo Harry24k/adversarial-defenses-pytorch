@@ -5,7 +5,7 @@ Although there's a lot of adversarial defense methods, a fair comparison between
 Here is the summary of training settings and robustness of each method used in the original paper on CIFAR10.
 
 - **AT - Towards Deep Learning Models Resistant to Adversarial Attacks (Madry et al., 2017)**
-    - **Model:** WideResNet
+    - **Model:** ?
     - **Batch size:** 128
     - **Optimizer:** SGD(momentum=0.9, weight decay=2x10-4)
     - **Learning Rate Decay:** Initial learning rate of 0.1, which is divided by 10 at the 100th and 150th epoch (200 epochs in total).
@@ -13,7 +13,7 @@ Here is the summary of training settings and robustness of each method used in t
     - **Early stopping:** None
     - **Performance (Clean/Robustness):** 87.3%/45.8% (PGD20, epsilon=8/255, last).
 - **TRADES - Theoretically Principled Trade-off between Robustness and Accuracy (Zhang et al., 2019)**
-    - **Model:** ResNet18
+    - **Model:** ResNet-18
     - **Batch size:** 128
     - **Optimizer:** SGD(momentum=0.9, weight decay=2x10-4)
     - **Learning Rate Decay:** initial learning rate = 0.1, decayed at 75th epoch.
@@ -22,7 +22,7 @@ Here is the summary of training settings and robustness of each method used in t
     - **Performance (Clean/Robustness):** 81.72%/50.64% (PGD20, epsilon=0.031, step size 0.003, best).
     - **Remark: (+)** WRN-34-10, 56.61% with the same settings.
 - **MART - Improving adversarial robustness requires revisiting misclassified examples (Wang, 2019)**
-    - **Model:** ResNet18
+    - **Model:** ResNet-18
     - **Batch size:** 128
     - **Optimizer:** SGD(momentum=0.9, weight decay=3.5×10−3)
     - **Learning Rate Decay:** Initial learning rate of 0.01, which is divided by 10 at the 75th and 90th epoch (100 epoch).
@@ -32,14 +32,14 @@ Here is the summary of training settings and robustness of each method used in t
     - **Remark: (+)** WRN-34-10, 84.17%/58.56% (best), 57.39% (last).(+) WRN-28-10+RST 86.30%/65.04%.
 - **Free - Adversarial training for free! (Shafahi et al., 2019)**
     - **Model:** WRN-32-10
-    - **Batch size: ** 256
+    - **Batch size:** 256
     - **Optimizer:** SGD(momentum=0.9, weight decay=2x10-4)
     - **Learning Rate Decay:** [training steps, learning rate] = [[0, 0.1], [40000, 0.01], [60000, 0.001]], (80000 training steps)
     - **Training Arguments:** epsilon=8/255,  m=8.
     - **Early stopping:** None
     - **Performance (Clean/Robustness):** 83.07%/46.82% (PGD20, epsilon=8/255, step size=?, last)
 - **Fast - Fast is better than free: Revisiting adversarial training (Wong et al., 2020)**
-    - **Model:** PreActResNet18
+    - **Model:** PreActResNet-18
     - **Batch size:** 128
     - **Optimizer:** SGD(momentum=0.9, weight decay=5×10−4)
     - **Learning Rate Decay:** Cyclic learning rate scheduling, max=0.2 (epoch 5), min=0 (epoch 15).
@@ -48,8 +48,8 @@ Here is the summary of training settings and robustness of each method used in t
     - **Performance (Clean/Robustness):** 83.81%/46.06% (PGD50-10, epsilon=8/255, step size=2/255)
 - **GradAlign - Understanding and improving fast adversarial training (Andriushchenko et al., 2020)**
     - **Model:** PreActResNet-18
-    - **Batch size: ** ?
-    - **Optimizer: ** ?
+    - **Batch size:** ?
+    - **Optimizer:** ?
     - **Training Arguments:** epsilon=8/255, alpha=8/255, beta=0.2.
     - **Early stopping:** None
     - **Learning Rate Decay:** Cyclic learning rate scheduling, 30 epochs with the maximum learning rate 0.3.
@@ -82,7 +82,7 @@ As shown in the above summary and the table from 'Bag of Tricks for Adversarial 
     - **Learning Rate Decay:**  initial learning rate=0.1, decayed by 10× half-way and three-quarters-of-the-way. 200 epochs.
     - **Early Stopping:** PGD 40 on 1024 samples from a separate validation set (disjoint from the training and test set).
 - **Bag of Tricks for Adversarial Training (Pang et al., 2020)**
-    - **Model:** ResNet18 / WRN-34-10
+    - **Model:** ResNet-18 / WRN-34-10
     - **Training method:** AT (Linf=8/255, step size of 2/255 and steps=10)
     - **Optimizer:** SGD(momentum=0.9, weight decay 5 × 10 −4)
     - **Learning Rate Decay:** initial learning rate=0.1. decay by a factor of 0.1 at 100 and 105 epochs (110 epochs)
