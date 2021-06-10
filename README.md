@@ -124,17 +124,14 @@ If you use this package, please cite the following BibTex:
 
 
 * **Model Architecture**:
-    * **Pre-Act-ResNet-18 (PRN18)**  [[Paper](https://arxiv.org/abs/1603.05027)] [[Code](https://github.com/kuangliu/pytorch-cifar)]
-      
-        * #Params: 11,171,146
+    * **ResNet-18 (RN18)**  [[Paper](https://arxiv.org/abs/1603.05027)] [[Code](https://github.com/kuangliu/pytorch-cifar)]
     * **Wide-ResNet-28-10 (WRN28)** [[Paper](https://arxiv.org/abs/1605.07146)] [[Code](https://github.com/bearpaw/pytorch-classification/blob/master/models/cifar/wrn.py)]
-      
-      * #Params: 36,479,194
-      
+
       
 
 
 * **Data Preprocessing**
+  
   * **Normalize**: _mean=[0.4914, 0.4822, 0.4465], std=[0.2023, 0.1994, 0.2010]_. Please refer to [here](/defenses/model.py).
   * **Augmentation**: _Random Crop, Random Horizontal Flip_ for only _training set_.
   
@@ -143,9 +140,9 @@ If you use this package, please cite the following BibTex:
 
 * **Training Recipes**:
     * **Stepwise**:
-        * **Epoch**: 100.
+        * **Epoch**: 200.
         * **Optimizer**: _SGD_ with _momentum=0.9, weight_decay=5e-4_.
-        * **Learning Rate**: _Initial learning rate=0.01_ and _decay x0.1 at 50 and 75 epoch_.
+        * **Learning Rate**: _Initial learning rate=0.01_ and _decay x0.1 at 50th, 100th, and 150th epoch_.
     * **Cyclic**:
         * **Epoch**: 30.
         * **Optimizer**: _SGD_ with _momentum=0.9, weight_decay=5e-4_.
@@ -159,37 +156,4 @@ Following "Overfitting in adversarially robust deep learning ([Rice et al., 2020
 
 Checkpoints for each model are provided through the link of each model name.
 
-### CIFAR10
-
-#### Cyclic
-
-| PRN18         | Standard |     FGSM |      PGD | Time (m) |
-| ------------- | -------: | -------: | -------: | -------: |
-| **Base**      |     93.3 |     14.7 |      0.0 |       13 |
-| _Single-step_ |          |          |          |          |
-| **FGSMAdv**   |     71.4 | **93.5** |      0.3 |       21 |
-| **Fast**      | **84.7** |     55.0 | **45.3** |       21 |
-| **Free**      |     68.1 |     42.7 |     39.6 |   **14** |
-| **GradAlign** |     84.5 |     53.4 |     44.0 |       95 |
-| _Mutli-step_  |          |          |          |          |
-| **PGDAdv**    | **81.0** | **56.2** |     50.7 |   **87** |
-| **TRADES**    |     79.5 |     54.5 |     50.7 |      101 |
-| **MART**      |     75.8 |     55.7 | **52.5** |       95 |
-
-
-
-#### Stepwise
-
-| PRN18         | Standard | FGSM |  PGD | Time (m) |
-| ------------- | -------: | ---: | ---: | -------: |
-| **Base**      |     93.7 | 12.9 |  0.0 |       46 |
-|               |          |      |      |          |
-| **FGSMAdv**   |     72.1 | 45.2 | 38.9 |          |
-| **Fast**      |     77.2 | 45.6 | 37.9 |          |
-| **Free**      |     73.9 | 44.4 | 39.0 |          |
-| **GradAlign** |     78.2 | 44.3 | 35.5 |          |
-|               |          |      |      |          |
-| **PGDAdv**    |     71.9 | 45.4 | 40.9 |          |
-| **TRADES**    |     69.1 | 45.5 | 42.5 |          |
-| **MART**      |     75.5 | 52.5 | 46.8 |          |
-
+Comming soon.
