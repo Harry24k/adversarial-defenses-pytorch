@@ -1,14 +1,16 @@
 # Modified from https://github.com/bearpaw/pytorch-classification/blob/master/models/cifar/wrn.py
 import math
 import torch
-from torch.nn import Module
+import torch.nn as nn
 import torch.nn.functional as F
 
-class Normalize(Module):
+class Normalize(nn.Module):
     def __init__(self, mean, std):
         super().__init__()
+        assert len(mean) == len(std)
         self.register_buffer('mean', torch.tensor(mean))
         self.register_buffer('std', torch.tensor(std))
+        self.register_buffer('n_channels', torch.tensor(len(mean)))
         
     def __str__(self):
         info = self.__dict__
@@ -19,6 +21,6 @@ class Normalize(Module):
     
     def forward(self, input):
         # Broadcasting
-        mean = self.mean.reshape(1, 3, 1, 1)
-        std = self.std.reshape(1, 3, 1, 1)
+        mean = self.mean.reshape(1, self.n_channels, 1, 1)
+        std = self.std.reshape(1, self.n_channels, 1, 1)
         return (input - mean) / std
