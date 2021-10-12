@@ -1,3 +1,9 @@
 _*/*
 _*
 data/*
+demo/*
+dist/*
+setup.cfg
+setup.py
+torchdefenses.egg-info/*
+build/*

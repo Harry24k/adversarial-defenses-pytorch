@@ -19,26 +19,26 @@ class RobModel(nn.Module):
         if normalize:
             self.norm = Normalize(normalize['mean'], normalize['std'])
             self.norm = self.norm.to(device)
+            self.model = nn.Sequential(norm, model)
             
     def forward(self, x):
-        norm_x = self.norm(x)
-        out = self.model(norm_x)
+        out = self.model(x)
         return out
 
     # Evaluation Robustness
     def eval_accuracy(self, data_loader, n_limit=None):
-        return get_acc(self, data_loader, n_limit)
+        return get_acc(self, data_loader, n_limit=n_limit)
         
     def eval_rob_accuracy(self, data_loader, atk, n_limit=None):
-        return get_acc(self, data_loader, n_limit, atk)
+        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)
         
     def eval_rob_accuracy_gn(self, data_loader, std, n_limit=None):
         atk = GN(self, std=std)
-        return self.eval_rob_accuracy(data_loader, n_limit, atk)
+        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)
         
     def eval_rob_accuracy_fgsm(self, data_loader, eps, n_limit=None):
         atk = FGSM(self, eps=eps)        
-        return self.eval_rob_accuracy(data_loader, n_limit, atk)
+        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)
     
     def eval_rob_accuracy_pgd(self, data_loader, eps, alpha, steps, random_start=True, 
                               restart_num=1, norm='Linf', n_limit=None):
@@ -53,10 +53,10 @@ class RobModel(nn.Module):
             
         if restart_num > 1:
             atk = torchattacks.MultiAttack([atk]*restart_num)
-        return self.eval_rob_accuracy(data_loader, n_limit, atk)
+        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)
         
     def eval_rob_accuracy_autoattack(self, data_loader, eps, version='standard',
                                      norm='Linf', n_limit=None):
         atk = AutoAttack(self, norm=norm, eps=eps,
                          version=version, n_classes=self.n_classes)
-        return self.eval_rob_accuracy(data_loader, n_limit, atk)
+        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)

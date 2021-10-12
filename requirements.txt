@@ -1,0 +1,2 @@
+torch>=1.4.0
+torchattacks>=3.2.1

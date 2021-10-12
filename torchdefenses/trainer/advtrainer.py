@@ -1,7 +1,7 @@
 import os
 import torch
 
-from .trainer import Trainer
+from ._trainer import Trainer
 
 r"""
 Base class for adversarial trainers.
@@ -33,19 +33,19 @@ class AdvTrainer(Trainer):
         if self._flag_record_rob:
             rob_records = []
             for loader in [self._train_loader_rob, self._val_loader_rob]:
-                rob_records.append(self.eval_accuracy(loader,
-                                                      n_limit=self._n_limit_rob))
-                rob_records.append(self.eval_rob_accuracy_fgsm(loader,
-                                                               eps=self._eps_rob,
-                                                               n_limit=self._n_limit_rob))
-                rob_records.append(self.eval_rob_accuracy_pgd(loader,
-                                                              eps=self._eps_rob,
-                                                              alpha=self._alpha_rob,
-                                                              steps=self._steps_rob,
-                                                              n_limit=self._n_limit_rob))
-                rob_records.append(self.eval_rob_accuracy_gn(loader,
-                                                             std=self._std_rob,
-                                                             n_limit=self._n_limit_rob))
+                rob_records.append(self.model.eval_accuracy(loader,
+                                                            n_limit=self._n_limit_rob))
+                rob_records.append(self.model.eval_rob_accuracy_fgsm(loader,
+                                                                     eps=self._eps_rob,
+                                                                     n_limit=self._n_limit_rob))
+                rob_records.append(self.model.eval_rob_accuracy_pgd(loader,
+                                                                    eps=self._eps_rob,
+                                                                    alpha=self._alpha_rob,
+                                                                    steps=self._steps_rob,
+                                                                    n_limit=self._n_limit_rob))
+                rob_records.append(self.model.eval_rob_accuracy_gn(loader,
+                                                                   std=self._std_rob,
+                                                                   n_limit=self._n_limit_rob))
             
             self.rm.add([*records,
                          *rob_records,
