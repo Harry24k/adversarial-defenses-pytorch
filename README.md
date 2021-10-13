@@ -43,9 +43,11 @@ trainer.rm.plot(title="A", xlabel="Epoch", ylabel="Accuracy",
 </p></details>
 
 <details><summary>Easy evaluation</summary><p>
+```
 rmodel.eval_accuracy(test_loader)
 rmodel.eval_rob_accuracy_pgd(test_loader, eps=1, alpha=0.1,
                              steps=10, random_start=True, restart_num=1)
+```
 </p></details>
 
 <details><summary>Useful functions</summary><p>
