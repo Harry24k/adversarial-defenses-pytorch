@@ -19,17 +19,17 @@ rmodel = td.RobModel(model, n_classes=10,
 import torchdefenses.trainer as tr
 trainer = tr.Standard(rmodel)
 trainer.record_rob(train_loader, val_loader, eps=0.3, alpha=0.1, steps=5, std=0.1)
-triner.fit(train_loader=train_loader, max_epoch=10, optimizer="SGD(lr=0.01)",
-           scheduler="Step([100, 105], 0.1)", scheduler_type="Epoch",
-           record_type="Epoch", save_type="Epoch",
-           save_path="./_temp/"+"sample", save_overwrite=True)
-triner.save_all("./_temp/"+"sample", overwrite=True)
+trainer.fit(train_loader=train_loader, max_epoch=10, optimizer="SGD(lr=0.01)",
+            scheduler="Step([100, 105], 0.1)", scheduler_type="Epoch",
+            record_type="Epoch", save_type="Epoch",
+            save_path="./_temp/"+"sample", save_overwrite=True)
 ```
 </p></details>
 
-<details><summary>Recording and Visualizing</summary><p>
+<details><summary>Recording, Saving and Visualizing</summary><p>
 
 ```python
+trainer.save_all("./_temp/"+"sample", overwrite=True)
 trainer.rm.plot(title="A", xlabel="Epoch", ylabel="Accuracy",
                 figsize=(6, 4),
                 x_key='Epoch',
