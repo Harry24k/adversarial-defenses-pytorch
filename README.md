@@ -15,8 +15,8 @@ rmodel = td.RobModel(model, n_classes=10, normalize={'mean':[0.4914, 0.4822, 0.4
 <details><summary>Easy training</summary><p>
 
 ```python
-import torchdefenses.trainer as td
-trainer = td.Standard(rmodel)
+import torchdefenses.trainer as tr
+trainer = tr.Standard(rmodel)
 trainer.record_rob(train_loader, val_loader, eps=0.3, alpha=0.1, steps=5, std=0.1)
 triner.fit(train_loader=train_loader, max_epoch=10, optimizer="SGD(lr=0.01)",
            scheduler="Step([100, 105], 0.1)", scheduler_type="Epoch",
