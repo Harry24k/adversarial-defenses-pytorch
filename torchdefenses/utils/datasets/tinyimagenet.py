@@ -14,7 +14,7 @@ import torchvision.transforms as transforms
 from torchvision.datasets.utils import download_and_extract_archive
 
 class TinyImageNet() :
-    def __init__(self, root="data",
+    def __init__(self, root="./data",
                  train=True,
                  transform=None) :
         

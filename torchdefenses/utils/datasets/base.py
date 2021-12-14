@@ -1,3 +1,4 @@
+import os.path
 import random
 import numpy as np
 
@@ -119,15 +120,25 @@ class Datasets() :
                                     transform=transform_test)
             
         elif data_name == "ImageNet":
-            self.train_data = ImageNet(root=root, 
-                                       split='train',
-                                       download=True,    
-                                       transform=transform_train)
+            file_train = 'ILSVRC2012_img_train.tar'
+            file_val = 'ILSVRC2012_img_val.tar'
+            if root[-1] == "/":
+                root = root[:-1]
+                
+            if os.path.isfile(root+"/"+file_train) and os.path.isfile(root+"/"+file_val):
+                pass
+            else:
+                raise ValueError("Please download ImageNet files via https://academictorrents.com/collection/imagenet-2012.")
+                
+            self.train_data = dsets.ImageNet(root=root, 
+                                             split='train',
+                                             download=True,    
+                                             transform=transform_train)
             
-            self.test_data = ImageNet(root=root, 
-                                      split='val',
-                                      download=True, 
-                                      transform=transform_test)
+            self.test_data = dsets.ImageNet(root=root, 
+                                            split='val',
+                                            download=True,
+                                            transform=transform_test)
         
         elif data_name == "USPS":
             self.train_data = USPS(root=root, 

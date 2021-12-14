@@ -19,7 +19,7 @@ class RobModel(nn.Module):
         if normalize:
             self.norm = Normalize(normalize['mean'], normalize['std'])
             self.norm = self.norm.to(device)
-            self.model = nn.Sequential(norm, model)
+            self.model = nn.Sequential(self.norm, model)
             
     def forward(self, x):
         out = self.model(x)

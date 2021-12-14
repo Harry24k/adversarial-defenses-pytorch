@@ -42,24 +42,24 @@ def load_model(model_name, n_classes):
         return MNIST_Fast(n_classes)
     
     elif model_name == "WRN28-10":
-        model = WideResNet(depth=28, num_classes=n_classes, widen_factor=10,
-                           dropRate=0.3, fc_input_dim_scale=fc_input_dim_scale)
+        model = WideResNet(depth=28, num_classes=n_classes, 
+                           widen_factor=10, dropRate=0.3)
         
     elif model_name == "WRN28-10-D0":
-        model = WideResNet(depth=28, num_classes=n_classes, widen_factor=10,
-                           dropRate=0.0, fc_input_dim_scale=fc_input_dim_scale)
+        model = WideResNet(depth=28, num_classes=n_classes,
+                           widen_factor=10, dropRate=0.0)
         
     elif model_name == "WRN34-10":
-        model = WideResNet(depth=34, num_classes=n_classes, widen_factor=10,
-                           dropRate=0.3, fc_input_dim_scale=fc_input_dim_scale)
+        model = WideResNet(depth=34, num_classes=n_classes,
+                           widen_factor=10, dropRate=0.3)
         
     elif model_name == "WRN34-10-D0":
-        model = WideResNet(depth=34, num_classes=n_classes, widen_factor=10,
-                           dropRate=0.0, fc_input_dim_scale=fc_input_dim_scale)
+        model = WideResNet(depth=34, num_classes=n_classes,
+                           widen_factor=10, dropRate=0.0)
         
     elif model_name == "PRN18":
         model = PreActResNet(PreActBlock, num_blocks=[2,2,2,2],
-                             num_classes=n_classes, fc_input_dim_scale=fc_input_dim_scale)
+                             num_classes=n_classes)
         
     elif model_name == "ResNet18":
         model = ResNet(ResBasicBlock, [2, 2, 2, 2], n_classes)
@@ -68,13 +68,13 @@ def load_model(model_name, n_classes):
         model = ResNet(ResBasicBlock, [3, 4, 6, 3], n_classes)
         
     elif model_name == "ResNet50":
-        model = ResNet(ResBottleneck, [3, 4, 6, 3], n_classes)
+        model = ResNet(ResBasicBlock, [3, 4, 6, 3], n_classes)
         
     elif model_name == "ResNet101":
-        model = ResNet(ResBottleneck, [3, 4, 23, 3], n_classes)
+        model = ResNet(ResBasicBlock, [3, 4, 23, 3], n_classes)
     
     elif model_name == "ResNet152":
-        model = ResNet(ResBottleneck, [3, 8, 36, 3], n_classes)
+        model = ResNet(ResBasicBlock, [3, 8, 36, 3], n_classes)
         
     elif model_name == "DenseNet121":
         model = DenseNet(Bottleneck, [6,12,24,16], growth_rate=32)
@@ -103,7 +103,6 @@ def load_model(model_name, n_classes):
     else:
         raise ValueError('Invalid model name.')
         
-    
-    print(name, "is loaded.")
+    print(model_name, "is loaded.")
         
     return model
