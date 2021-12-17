@@ -7,6 +7,8 @@
 
 [Torchdefenses] is a PyTorch library that provides *adversarial defenses* to obtain robust model against adversarial attacks. It contains *PyTorch Lightning-like* interface and functions that make it easier for PyTorch users to implement adversarial defenses.
 
+## How to use?
+  
 ```python
 import torchdefenses as td
 rmodel = td.RobModel(model, n_classes=10, 
@@ -60,3 +62,6 @@ fix_randomness(0)
 fix_gpu(0)
 ```
 </p></details>
+  
+## How to customize?
+  
