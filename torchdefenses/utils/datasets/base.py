@@ -1,6 +1,7 @@
 import os.path
 import random
 import numpy as np
+from copy import deepcopy
 
 import torch
 from torch.utils.data import DataLoader, Subset, ConcatDataset
@@ -22,9 +23,9 @@ class Datasets() :
                  label_filter=None,
                  shuffle_train=True,
                  shuffle_val=False,
-                 transform_train=transforms.ToTensor(), 
-                 transform_test=transforms.ToTensor(), 
-                 transform_val=transforms.ToTensor(),
+                 transform_train=None, 
+                 transform_test=None, 
+                 transform_val=None,
                  corruption=None,
                 ):
 
@@ -42,6 +43,53 @@ class Datasets() :
         if val_info is not None:
             if label_filter is not None:
                 raise ValueError("Validation + Label filtering is not supported yet.")
+                
+        # Base transform
+        if (data_name == "CIFAR10") or (data_name == "CIFAR100"):
+            if transform_train is None:
+                transform_train = transforms.Compose([
+                    transforms.RandomCrop(32, padding=4),
+                    transforms.RandomHorizontalFlip(),
+                    transforms.ToTensor(),
+                ])
+            if transform_test is None:
+                transform_test = transforms.ToTensor()
+            if transform_val is None:
+                transform_val = transforms.ToTensor()
+
+        elif data_name == "TinyImageNet":
+            if transform_train is None:
+                transform_train = transforms.Compose([
+                    transforms.RandomCrop(64, padding=4),
+                    transforms.RandomHorizontalFlip(),
+                    transforms.ToTensor(),
+                ])
+            if transform_test is None:
+                transform_test = transforms.ToTensor()
+            if transform_val is None:
+                transform_val = transforms.ToTensor()
+        
+        elif data_name == "ImageNet":
+            if transform_train is None:
+                transform_train = transforms.Compose([
+                    transforms.RandomResizedCrop(224),
+                    transforms.RandomHorizontalFlip(),
+                    transforms.ToTensor(),
+                ])
+            if transform_test is None:
+                transform_test = transforms.Compose([
+                    transforms.Resize((224, 224)),
+                    transforms.ToTensor(),
+                ])
+            if transform_val is None:
+                transform_val = transforms.Compose([
+                    transforms.Resize((224, 224)),
+                    transforms.ToTensor(),
+                ])
+        
+        else:
+            raise ValueError(data_name + " requires transfoms (Default NOT exists).")
+            
         
         # Load dataset
         if data_name == "CIFAR10":
@@ -239,11 +287,11 @@ class Datasets() :
             else:
                 raise ValueError("val_info must be the one of [int, float or list].")
                 
-            self.val_data = Subset(self.train_data, self.val_idx)            
-            self.val_data.transform = transform_val            
+            copy_train_data = deepcopy(self.train_data)
+            self.val_data = Subset(copy_train_data, self.val_idx)
+            self.val_data.dataset.transform = transform_val
             
             self.train_idx = list(set(range(len(self.train_data))) - set(self.val_idx))
-            
             self.train_data = Subset(self.train_data, self.train_idx)
             # For unsup datasets...
             if self.train_data_sup is not None:
