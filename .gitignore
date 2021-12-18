@@ -7,3 +7,4 @@ setup.py
 torchdefenses.egg-info/*
 build/*
 _commit.bat
+TODO.txt
