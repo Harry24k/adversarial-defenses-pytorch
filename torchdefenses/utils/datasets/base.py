@@ -18,7 +18,6 @@ from .cifar_corrupt import CORRUPTIONS, corrupt_cifar
 class Datasets() :
     def __init__(self, data_name, root='./data',
                  val_info=None,
-                 val_seed=0,
                  label_filter=None,
                  shuffle_train=True,
                  shuffle_val=False,
@@ -31,7 +30,6 @@ class Datasets() :
         self.shuffle_train = shuffle_train
         self.shuffle_val = shuffle_val
         self.val_info = val_info
-        self.val_seed = val_seed
         
         self.train_data_sup = None
         self.train_data_unsup = None
@@ -122,16 +120,10 @@ class Datasets() :
                                     transform=transform_test)
             
         elif data_name == "ImageNet":
-            file_meta = 'ILSVRC2012_devkit_t12.tar.gz'
             file_train = 'ILSVRC2012_img_train.tar'
             file_val = 'ILSVRC2012_img_val.tar'
             if root[-1] == "/":
                 root = root[:-1]
-                
-            if os.path.isfile(root+"/"+file_meta):
-                pass
-            else:
-                raise ValueError("Please download ImageNet Meta file via https://image-net.org/data/ILSVRC/2012/ILSVRC2012_devkit_t12.tar.gz.")
                 
             if os.path.isfile(root+"/"+file_train) and os.path.isfile(root+"/"+file_val):
                 pass
@@ -139,11 +131,13 @@ class Datasets() :
                 raise ValueError("Please download ImageNet files via https://academictorrents.com/collection/imagenet-2012.")
                 
             self.train_data = dsets.ImageNet(root=root, 
-                                             split='train',  
+                                             split='train',
+                                             download=True,    
                                              transform=transform_train)
             
             self.test_data = dsets.ImageNet(root=root, 
                                             split='val',
+                                            download=True,
                                             transform=transform_test)
         
         elif data_name == "USPS":
@@ -225,13 +219,13 @@ class Datasets() :
                     raise ValueError("The ratio of validation set must be in the range of (0, 1).")
                 else:
                     self.val_len = int(max_len*self.val_info)
-                    self.val_idx = np.random.RandomState(seed=self.val_seed).permutation(max_len)[:self.val_len].tolist()
+                    self.val_idx = random.sample(range(0, max_len), self.val_len)
             elif isinstance(self.val_info, int):
                 if self.val_info <= 0 or self.val_info >= max_len:
                     raise ValueError("The number of validation set must be in the range of (0, len(train_data)).")
                 else:
                     self.val_len = self.val_info
-                    self.val_idx = np.random.RandomState(seed=self.val_seed).permutation(max_len)[:self.val_len].tolist()
+                    self.val_idx = random.sample(range(0, max_len), self.val_len)
             elif isinstance(self.val_info, list):
                 self.val_len = len(self.val_info)
                 self.val_idx = self.val_info

@@ -15,14 +15,14 @@ from .models.wideresnet import WideResNet
 from .cuda import fix_randomness, fix_gpu
 
 def load_dataset(data_name, batch_size,
-                 root='./data', val_info=None, val_seed=0, label_filter=None,
+                 root='./data', val_info=None, label_filter=None,
                  shuffle_train=True, shuffle_val=False,
                  transform_train=transforms.ToTensor(),
                  transform_test=transforms.ToTensor(), 
                  transform_val=transforms.ToTensor(),
                  corruption=None,
                 ):
-    data = Datasets(data_name, root, val_info, val_seed, label_filter,
+    data = Datasets(data_name, root, val_info, label_filter,
                     shuffle_train, shuffle_val,
                     transform_train, transform_test, transform_val,
                     corruption)
