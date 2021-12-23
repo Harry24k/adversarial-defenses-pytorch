@@ -34,7 +34,7 @@ class AdvTrainer(Trainer):
             for loader in [self._train_loader_rob, self._val_loader_rob]:
                 rob_records.append(self.model.eval_accuracy(loader))
                 rob_records.append(self.model.eval_rob_accuracy_fgsm(loader,
-                                                                     eps=self._eps_rob, verbose=False)
+                                                                     eps=self._eps_rob, verbose=False))
                 rob_records.append(self.model.eval_rob_accuracy_pgd(loader,
                                                                     eps=self._eps_rob,
                                                                     alpha=self._alpha_rob,
