@@ -20,7 +20,7 @@ class AdvTrainer(Trainer):
         self.record_keys += ['Clean(Tr)', 'FGSM(Tr)', 'PGD(Tr)', 'GN(Tr)',
                              'Clean(Val)', 'FGSM(Val)', 'PGD(Val)', 'GN(Val)',]    
         self._flag_record_rob = True    
-        self._train_loader_rob = get_sample_loader(train_loader, n_limit)
+        self._train_loader_rob = self.get_sample_loader(train_loader, n_limit)
         self._val_loader_rob = val_loader
         self._eps_rob = eps
         self._alpha_rob = alpha
