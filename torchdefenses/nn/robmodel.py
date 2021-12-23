@@ -26,22 +26,22 @@ class RobModel(nn.Module):
         return out
 
     # Evaluation Robustness
-    def eval_accuracy(self, data_loader, n_limit=None):
-        return get_acc(self, data_loader, n_limit=n_limit)
+    def eval_accuracy(self, data_loader):
+        return get_acc(self, data_loader)
         
-    def eval_rob_accuracy(self, data_loader, atk, n_limit=None):
-        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)
+    def eval_rob_accuracy(self, data_loader, atk, save_path=None, verbose=True, save_pred=False):
+        return atk.save(data_loader, save_path, verbose, return_verbose=True, save_pred=save_pred)[0]
         
-    def eval_rob_accuracy_gn(self, data_loader, std, n_limit=None):
+    def eval_rob_accuracy_gn(self, data_loader, std, save_path=None, verbose=True, save_pred=False):
         atk = GN(self, std=std)
-        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)
+        return atk.save(data_loader, save_path, verbose, return_verbose=True, save_pred=save_pred)[0]
         
-    def eval_rob_accuracy_fgsm(self, data_loader, eps, n_limit=None):
+    def eval_rob_accuracy_fgsm(self, data_loader, eps, save_path=None, verbose=True, save_pred=False):
         atk = FGSM(self, eps=eps)        
-        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)
+        return atk.save(data_loader, save_path, verbose, return_verbose=True, save_pred=save_pred)[0]
     
     def eval_rob_accuracy_pgd(self, data_loader, eps, alpha, steps, random_start=True, 
-                              restart_num=1, norm='Linf', n_limit=None):
+                              restart_num=1, norm='Linf', save_path=None, verbose=True, save_pred=False):
         if norm=='Linf':
             atk = PGD(self, eps=eps, alpha=alpha,
                       steps=steps, random_start=random_start)
@@ -53,10 +53,10 @@ class RobModel(nn.Module):
             
         if restart_num > 1:
             atk = torchattacks.MultiAttack([atk]*restart_num)
-        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)
+        return atk.save(data_loader, save_path, verbose, return_verbose=True, save_pred=save_pred)[0]
         
     def eval_rob_accuracy_autoattack(self, data_loader, eps, version='standard',
-                                     norm='Linf', n_limit=None):
+                                     norm='Linf', save_path=None, verbose=True, save_pred=False):
         atk = AutoAttack(self, norm=norm, eps=eps,
                          version=version, n_classes=self.n_classes)
-        return get_acc(self, data_loader, n_limit=n_limit, atk=atk)
+        return atk.save(data_loader, save_path, verbose, return_verbose=True, save_pred=save_pred)[0]
