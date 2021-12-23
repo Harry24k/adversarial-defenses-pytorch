@@ -56,11 +56,11 @@ class AdvTrainer(Trainer):
         num = 0
         for item in given_loader:
             final_loader.append(item)
-            if isinstance(item, tuple):
+            if isinstance(item, tuple) or isinstance(item, list):
                 batch_size = len(item[0])
             else:
                 batch_size = len(item)
             num += batch_size
-            if num > n_limit:
+            if num >= n_limit:
                 break
         return final_loader
