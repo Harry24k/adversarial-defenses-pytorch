@@ -33,7 +33,7 @@ class BAT(AdvTrainer):
         loss (str): inner maximization loss. [Options: 'ce', 'kl'] (Default: 'ce')
     """
     def __init__(self, model, eps, alpha, steps, beta, m, loss='ce'):
-        super().__init__("TRADES", model)
+        super().__init__("BAT", model)
         self.record_keys = ["Loss", "CELoss", "KLLoss"] # Must be same as the items returned by self._do_iter
         if loss == 'ce':
             self.atk = PGD(model, eps, alpha, steps)

@@ -28,6 +28,7 @@ class Trainer():
         
         # Set Epoch and Iterations
         self.max_epoch = max_epoch
+        self.train_loader = train_loader
         self.max_iter = len(train_loader)
             
         # Set Optimizer and Schduler

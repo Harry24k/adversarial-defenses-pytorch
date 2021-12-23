@@ -16,11 +16,11 @@ class AdvTrainer(Trainer):
         super(AdvTrainer, self).__init__(name, model)
         self._flag_record_rob = False
     
-    def record_rob(self, train_loader, val_loader, eps, alpha, steps, std=0.1):
+    def record_rob(self, train_loader, val_loader, eps, alpha, steps, std=0.1, n_limit=1000):
         self.record_keys += ['Clean(Tr)', 'FGSM(Tr)', 'PGD(Tr)', 'GN(Tr)',
                              'Clean(Val)', 'FGSM(Val)', 'PGD(Val)', 'GN(Val)',]    
         self._flag_record_rob = True    
-        self._train_loader_rob = train_loader
+        self._train_loader_rob = get_sample_loader(train_loader, n_limit)
         self._val_loader_rob = val_loader
         self._eps_rob = eps
         self._alpha_rob = alpha
@@ -51,3 +51,16 @@ class AdvTrainer(Trainer):
             self.rm.add([*records,
                          self.optimizer.param_groups[0]['lr']])
 
+    def get_sample_loader(self, given_loader, n_limit):
+        final_loader = []
+        num = 0
+        for item in given_loader:
+            final_loader.append(item)
+            if isinstance(item, tuple):
+                batch_size = len(item[0])
+            else:
+                batch_size = len(item)
+            num += batch_size
+            if num > n_limit:
+                break
+        return final_loader
