@@ -8,7 +8,7 @@
 [Torchdefenses] is a PyTorch library that provides *adversarial defenses* to obtain robust model against adversarial attacks. It contains *PyTorch Lightning-like* interface and functions that make it easier for PyTorch users to implement adversarial defenses.
 
 ## How to use?
-  
+
 ```python
 import torchdefenses as td
 rmodel = td.RobModel(model, n_classes=10, 
@@ -26,6 +26,24 @@ trainer.fit(train_loader=train_loader, max_epoch=10, optimizer="SGD(lr=0.01)",
             record_type="Epoch", save_type="Epoch",
             save_path="./_temp/"+"sample", save_overwrite=True)
 ```
+</p></details>
+
+<details><summary>Supporting Multi-GPU</summary><p>
+
+
+```python
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "1,2" # Possible GPUS
+
+model = td.utils.load_model(model_name="ResNet18", n_classes=10).cuda() # Load model
+model = torch.nn.DataParallel(model) # Parallelize
+
+rmodel = td.RobModel(model, n_classes=10, 
+                  normalize={'mean':[0.4914, 0.4822, 0.4465], 'std':[0.2023, 0.1994, 0.2010]}) # Wrap it with RobModel
+trainer = ... # Define trainer
+trainer.fit(..) # Training start
+```
+
 </p></details>
 
 <details><summary>Recording, Saving and Visualizing</summary><p>
@@ -62,6 +80,6 @@ fix_randomness(0)
 fix_gpu(0)
 ```
 </p></details>
-  
+
 ## How to customize?
-  
+
