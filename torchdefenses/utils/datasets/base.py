@@ -2,6 +2,7 @@ import os.path
 import random
 import numpy as np
 from copy import deepcopy
+import warnings
 
 import torch
 from torch.utils.data import DataLoader, Subset, ConcatDataset
@@ -86,9 +87,22 @@ class Datasets() :
                     transforms.Resize((224, 224)),
                     transforms.ToTensor(),
                 ])
-        
+                
         else:
-            raise ValueError(data_name + " requires transfoms (Default NOT exists).")
+            warnings.warn("transforms.ToTensor() is used as a transform.", Warning)
+            
+            if transform_train is None:
+                transform_train = transforms.Compose([
+                    transforms.ToTensor(),
+                ])
+            if transform_test is None:
+                transform_test = transforms.Compose([
+                    transforms.ToTensor(),
+                ])
+            if transform_val is None:
+                transform_val = transforms.Compose([
+                    transforms.ToTensor(),
+                ])
             
         
         # Load dataset
