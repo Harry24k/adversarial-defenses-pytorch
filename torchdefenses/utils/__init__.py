@@ -47,6 +47,9 @@ def load_model(model_name, n_classes):
         model = PreActResNet(PreActBlock, num_blocks=[2,2,2,2],
                              num_classes=n_classes)
         
+    elif model_name == "ResNet10":
+        model = ResNet(ResBasicBlock, [1, 1, 1, 1], n_classes, in_channels=1)
+        
     elif model_name == "ResNet18":
         model = ResNet(ResBasicBlock, [2, 2, 2, 2], n_classes)
         
