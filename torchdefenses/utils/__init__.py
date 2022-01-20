@@ -2,7 +2,7 @@ import torchvision.transforms as transforms
 
 from .datasets.base import Datasets
 
-from .models.lenet import LeNet
+from .models.lenet import LeNet, LeNetPP
 from .models.mnist_ates import MNIST_ATES
 from .models.mnist_dat import MNIST_DAT
 from .models.mnist_fast import MNIST_Fast
@@ -17,6 +17,9 @@ from .cuda import fix_randomness, fix_gpu
 def load_model(model_name, n_classes):
     if model_name == "LeNet":
         return LeNet(n_classes)
+    
+    if model_name == "LeNetPP":
+        return LeNetPP(n_classes)
     
     elif model_name == "MNIST_ATES":
         return MNIST_ATES(n_classes)
