@@ -51,7 +51,7 @@ class ATRADES(AdvTrainer):
         X = images.to(self.device)
         Y = labels.to(self.device)
 
-        X_adv = self.atk(X)
+        X_adv = self.atk(X, Y)
         
         # AT
         cost_at = nn.CrossEntropyLoss()(logits_adv, Y)
