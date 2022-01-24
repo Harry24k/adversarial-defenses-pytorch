@@ -52,9 +52,6 @@ class ATRADES(AdvTrainer):
         Y = labels.to(self.device)
 
         X_adv = self.atk(X, Y)
-        
-        # AT
-        cost_at = nn.CrossEntropyLoss()(logits_adv, Y)
 
         # TRADES
         logits_clean = self.model(X)
@@ -66,6 +63,9 @@ class ATRADES(AdvTrainer):
         loss_kl = nn.KLDivLoss(reduction='batchmean')(log_prob_adv, prob_clean)
         
         cost_trades = loss_ce + self.beta * loss_kl
+        
+        # AT
+        cost_at = nn.CrossEntropyLoss()(logits_adv, Y)
         
         # Combine        
         cost = self.eta*cost_at + (1-self.eta)*cost_trades
