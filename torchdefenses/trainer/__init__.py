@@ -7,3 +7,5 @@ from .empirical_defenses.mart import MART
 from .empirical_defenses.trades import TRADES
 from .empirical_defenses.bat import BAT
 from .empirical_defenses.atrades import ATRADES
+from .empirical_defenses.awp_at import AwpAT
+from .empirical_defenses.awp_trades import AwpTRADES
